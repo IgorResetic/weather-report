@@ -88,11 +88,6 @@ dependencies {
     // ***** Retrofit ***** //
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
 
-    // ***** Moshi ***** //
-    api "com.squareup.moshi:moshi-kotlin:$moshi_version"
-    api "com.squareup.moshi:moshi-adapters:$moshi_version"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
-
     // ***** Kotlin style checks ***** //
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detekt_version"
 }
