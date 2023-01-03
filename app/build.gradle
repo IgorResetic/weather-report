@@ -92,6 +92,10 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
+    // ***** Mockito unit test ***** //
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin_version"
+
     // ***** Kotlin style checks ***** //
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detekt_version"
 }
