@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.rememberNavController
 import com.iresetic.weatherreport.core.domain.model.city.City
+import com.iresetic.weatherreport.core.presentation.routes.SetupNavGraph
 import com.iresetic.weatherreport.locationselection.domain.usecases.GetAllCities
 import com.iresetic.weatherreport.locationselection.domain.usecases.GetCityData
 import com.iresetic.weatherreport.ui.theme.WeatherReportTheme
@@ -30,6 +32,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+/*
 
         runBlocking {
             withContext(Dispatchers.IO) {
@@ -37,28 +40,13 @@ class MainActivity : ComponentActivity() {
                 Log.d("TEST_CITY", "City: ${getCityData.invoke("3041563")}")
             }
         }
+*/
 
         setContent {
             WeatherReportTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android")
-                }
+                val navController = rememberNavController()
+                SetupNavGraph(navController = navController)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    WeatherReportTheme {
-        Greeting("Android")
     }
 }

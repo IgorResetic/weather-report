@@ -1,6 +1,7 @@
 package com.iresetic.weatherreport.locationselection.data
 
 import android.content.Context
+import android.util.Log
 import com.iresetic.weatherreport.core.constants.LOCATIONS_JSON_FILENAME
 import com.iresetic.weatherreport.core.data.local.model.CityDto
 import com.iresetic.weatherreport.core.domain.model.city.City
@@ -34,6 +35,7 @@ class CitiesRepositoryImpl@Inject constructor(
     private fun populateCitiesMap() {
         if(cities.isEmpty()) {
             Timber.tag("CitiesRepository").i("Populate cities Map")
+            Log.d("TEST_CITY", "get Cities")
             cities = try {
                 val locationsJson = getCitiesJson()
                 val cityAdapter = getCitiesMoshiAdapter()
