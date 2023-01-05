@@ -3,5 +3,6 @@
 
     <!-- Location selector screen -->
     <string name="location_selector_search_hint">Search</string>
+    <string name="location_selector_error_message">Currently there are no cities to select.</string>
 
 </resources>

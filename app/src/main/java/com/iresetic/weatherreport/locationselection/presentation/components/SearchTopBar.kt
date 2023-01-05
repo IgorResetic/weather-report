@@ -99,7 +99,7 @@ fun SearchTopBar(navController: NavController, locationSelectorState: LocationSe
                         contentDescription = "Back"
                     )
                 }
-            },
+            }
         )
         Divider(color = BlackTransparent_15, thickness = 0.8.dp)
     }
