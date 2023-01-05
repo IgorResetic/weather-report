@@ -1,4 +1,4 @@
-package com.iresetic.weatherreport.core.data.local.model
+package com.iresetic.weatherreport.core.data.local.datasource
 
 import com.iresetic.weatherreport.core.domain.model.city.City
 
@@ -6,8 +6,8 @@ import com.iresetic.weatherreport.core.domain.model.city.City
 interface SimpleLocalDataSource {
 
     /** Returns currently selected city. */
-    suspend fun getSelectedCity(): String
+    suspend fun getSelectedCity(): City?
 
     /** Saves currently selected city. */
-    suspend fun setSelectedCity(cityId: String)
+    suspend fun setSelectedCity(city: City)
 }

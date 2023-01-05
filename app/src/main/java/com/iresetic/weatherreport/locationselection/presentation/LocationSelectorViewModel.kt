@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.iresetic.weatherreport.core.domain.model.city.City
 import com.iresetic.weatherreport.core.domain.usecases.SaveSelectCity
 import com.iresetic.weatherreport.locationselection.domain.usecases.GetAllCities
 import com.iresetic.weatherreport.locationselection.domain.usecases.GetCityData
@@ -60,7 +61,7 @@ class LocationSelectorViewModel @Inject constructor(
     private fun selectCity(cityId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val selectedCity = getCityData.invoke(cityId)
-            saveSelectCity.invoke(selectedCity?.id ?: "")
+            saveSelectCity.invoke(selectedCity ?: City.emptyCityModel())
         }
     }
 

@@ -1,7 +1,7 @@
 package com.iresetic.weatherreport.core.di
 
-import com.iresetic.weatherreport.core.data.local.model.PreferenceSimpleLocalDataSource
-import com.iresetic.weatherreport.core.data.local.model.SimpleLocalDataSource
+import com.iresetic.weatherreport.core.data.local.datasource.PreferenceSimpleLocalDataSource
+import com.iresetic.weatherreport.core.data.local.datasource.SimpleLocalDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

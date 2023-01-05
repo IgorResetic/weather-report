@@ -19,6 +19,7 @@ fun WeatherForecastScreen(
     val viewModel = hiltViewModel<WeatherForecastViewModel>()
 
     Scaffold() {
+        viewModel.getCity()
         Button(onClick = {
             navController.navigate(Destination.LocationSelector.route)
         }) {
