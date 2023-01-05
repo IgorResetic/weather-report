@@ -14,12 +14,13 @@ import com.iresetic.weatherreport.ui.theme.Dimens
 
 @Composable
 fun CityListItem(
-    cityName: String
+    cityName: String,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { Log.d("TEST_CITY", "Select: $cityName") }
+            .clickable { onClick() }
             .padding(
                 horizontal = Dimens.MEDIUM_PADDING,
                 vertical = Dimens.LARGE_PADDING

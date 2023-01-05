@@ -11,18 +11,35 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.iresetic.weatherreport.R
 import com.iresetic.weatherreport.core.presentation.components.ErrorMessage
+import com.iresetic.weatherreport.locationselection.presentation.LocationSelectorEvent
 import com.iresetic.weatherreport.locationselection.presentation.LocationSelectorState
 import com.iresetic.weatherreport.locationselection.presentation.LocationSelectorViewModel
+import com.iresetic.weatherreport.locationselection.presentation.model.UICity
 import com.iresetic.weatherreport.ui.theme.BlackTransparent_15
 
 @Composable
-fun CitiesList(locationSelectorState: LocationSelectorState, topPadding: Dp) {
+fun CitiesList(
+    navController: NavController,
+    locationSelectorState: LocationSelectorState,
+    topPadding: Dp
+) {
     val viewModel = hiltViewModel<LocationSelectorViewModel>()
     val focusManager = LocalFocusManager.current
-
     val viewModelState = viewModel.state
+
+    fun onClickSelectCity(city: UICity) {
+        viewModel.onEvent(LocationSelectorEvent.SelectCity(city))
+        navController.popBackStack()
+    }
+
+    fun clearFocusWhenScrolling() {
+        if (locationSelectorState.isScrolling()) {
+            focusManager.clearFocus()
+        }
+    }
 
     LazyColumn(
         state = locationSelectorState.listState,
@@ -30,12 +47,14 @@ fun CitiesList(locationSelectorState: LocationSelectorState, topPadding: Dp) {
     ) {
         val numberOfCities = viewModelState.cities.size
 
-        if (locationSelectorState.isScrolling()) {
-            focusManager.clearFocus()
-        }
+        clearFocusWhenScrolling()
+
         items(numberOfCities) { index ->
-            val cityName = viewModelState.cities[index].cityName
-            CityListItem(cityName = cityName)
+            val city = viewModelState.cities[index]
+            CityListItem(
+                cityName = city.cityName,
+                onClick = { onClickSelectCity(city) }
+            )
             Divider(color = BlackTransparent_15, thickness = 0.8.dp)
         }
 

@@ -5,20 +5,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.iresetic.weatherreport.core.domain.usecases.SaveSelectCity
 import com.iresetic.weatherreport.locationselection.domain.usecases.GetAllCities
 import com.iresetic.weatherreport.locationselection.domain.usecases.GetCityData
 import com.iresetic.weatherreport.locationselection.presentation.LocationSelectorEvent.*
 import com.iresetic.weatherreport.locationselection.presentation.model.UICity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LocationSelectorViewModel @Inject constructor(
     private val getAllCities: GetAllCities,
-    private val getCityData: GetCityData
+    private val getCityData: GetCityData,
+    private val saveSelectCity: SaveSelectCity
 ) : ViewModel() {
     var state by mutableStateOf(LocationSelectorUiState())
         private set
@@ -58,7 +59,8 @@ class LocationSelectorViewModel @Inject constructor(
 
     private fun selectCity(cityId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            getCityData.invoke(cityId)
+            val selectedCity = getCityData.invoke(cityId)
+            saveSelectCity.invoke(selectedCity?.id ?: "")
         }
     }
 
