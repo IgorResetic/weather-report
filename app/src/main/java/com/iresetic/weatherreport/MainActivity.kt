@@ -32,15 +32,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-/*
-
-        runBlocking {
-            withContext(Dispatchers.IO) {
-                Log.d("TEST_CITY", "${getAllCities.invoke().size}")
-                Log.d("TEST_CITY", "City: ${getCityData.invoke("3041563")}")
-            }
-        }
-*/
 
         setContent {
             WeatherReportTheme {

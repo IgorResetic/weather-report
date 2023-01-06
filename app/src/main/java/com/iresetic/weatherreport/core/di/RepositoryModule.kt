@@ -2,6 +2,8 @@ package com.iresetic.weatherreport.core.di
 
 import com.iresetic.weatherreport.locationselection.data.CitiesRepositoryImpl
 import com.iresetic.weatherreport.locationselection.domain.repositories.CitiesRepository
+import com.iresetic.weatherreport.weatherforcast.data.repositories.WeatherReportRepositoryImpl
+import com.iresetic.weatherreport.weatherforcast.domain.repositories.WeatherReportRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,4 +20,10 @@ abstract class RepositoryModule {
     abstract fun bindCitiesRepository(
         citiesRepositoryImpl: CitiesRepositoryImpl
     ): CitiesRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindWeatherReportRepository(
+        weatherReportRepositoryImpl: WeatherReportRepositoryImpl
+    ): WeatherReportRepository
 }
