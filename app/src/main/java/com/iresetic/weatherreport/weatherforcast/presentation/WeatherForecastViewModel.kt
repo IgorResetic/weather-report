@@ -10,7 +10,7 @@ import com.iresetic.weatherreport.core.domain.usecases.GetSavedCity
 import com.iresetic.weatherreport.core.util.Resource
 import com.iresetic.weatherreport.weatherforcast.domain.model.CityWeatherReport
 import com.iresetic.weatherreport.weatherforcast.domain.repositories.WeatherReportRepository
-import com.iresetic.weatherreport.weatherforcast.presentation.WeatherForecastEvent.GetCityWeatherReport
+import com.iresetic.weatherreport.weatherforcast.presentation.WeatherForecastEvent.*
 import com.iresetic.weatherreport.weatherforcast.presentation.model.UiCityWeatherReport
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -26,13 +26,22 @@ class WeatherForecastViewModel @Inject constructor(
 
     fun onEvent(event: WeatherForecastEvent) {
         when(event) {
-                is GetCityWeatherReport -> {
+            is GetCityWeatherReport -> {
                 state = state.copy(
                     isLoading = true,
+                    isRefreshing = false,
                     error = null
                 )
 
                 getCityWeatherForecast()
+            }
+            is RefreshWeatherForecastScreen -> {
+               state = state.copy(
+                   isLoading = true,
+                   isRefreshing = true
+               )
+
+               getCityWeatherForecast()
             }
         }
     }
@@ -40,7 +49,6 @@ class WeatherForecastViewModel @Inject constructor(
     fun getCityWeatherForecast() {
         viewModelScope.launch {
             val city = getSavedCity.invoke() ?: City.emptyCityModel()
-
             if(city != City.emptyCityModel()) {
                 when(val cityWeatherReport = weatherReportRepository.getCityWeatherReport(city)) {
                     is Resource.Success -> {
@@ -50,16 +58,27 @@ class WeatherForecastViewModel @Inject constructor(
                                 cityWeatherReport.data ?:
                                 CityWeatherReport.emptyCityWeatherReport()
                             ),
+                            isCitySelected = true,
+                            isRefreshing = false,
                             error = null
                         )
                     }
                     is Resource.Error -> {
                         state = state.copy(
                             isLoading = false,
+                            isCitySelected = true,
+                            isRefreshing = false,
                             error = cityWeatherReport.message
                         )
                     }
                 }
+            } else {
+                state = state.copy(
+                    isLoading = false,
+                    isCitySelected = false,
+                    isRefreshing = false,
+                    error = null
+                )
             }
         }
     }

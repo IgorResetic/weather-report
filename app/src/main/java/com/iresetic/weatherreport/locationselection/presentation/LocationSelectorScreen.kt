@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.iresetic.weatherreport.R
-import com.iresetic.weatherreport.core.presentation.components.ErrorMessage
+import com.iresetic.weatherreport.core.presentation.components.FullScreenErrorMessage
 import com.iresetic.weatherreport.locationselection.presentation.LocationSelectorEvent.GetCities
 import com.iresetic.weatherreport.locationselection.presentation.components.CitiesList
 import com.iresetic.weatherreport.locationselection.presentation.components.SearchTopBar
@@ -50,7 +50,7 @@ fun LocationSelectorScreen(navController: NavController) {
                 }
 
                 !viewModelState.isLoading && viewModelState.cities.isEmpty() -> {
-                    ErrorMessage(errorMessage = stringResource(
+                    FullScreenErrorMessage(errorMessage = stringResource(
                         id = R.string.location_selector_error_message
                     ))
                 }
