@@ -8,6 +8,7 @@
     <!-- Weather forecast screen -->
     <string name="weather_forecast_io_error">There was a problem with communication to the server</string>
     <string name="weather_forecast_api_error">Unable to find data on the server.</string>
+    <string name="weather_forecast_general_error">Error fetching weather report data.</string>
     <string name="weather_forecast_city_title">City</string>
     <string name="weather_forecast_city_not_selected_message">Please select a city.</string>
     <string name="weather_forecast_select_a_city_button">Select a City</string>

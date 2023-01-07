@@ -9,7 +9,7 @@ import com.iresetic.weatherreport.core.domain.model.city.City
 import com.iresetic.weatherreport.core.domain.usecases.GetSavedCity
 import com.iresetic.weatherreport.core.util.Resource
 import com.iresetic.weatherreport.weatherforcast.domain.model.CityWeatherReport
-import com.iresetic.weatherreport.weatherforcast.domain.repositories.WeatherReportRepository
+import com.iresetic.weatherreport.weatherforcast.domain.usecases.GetCityWeatherForecast
 import com.iresetic.weatherreport.weatherforcast.presentation.WeatherForecastEvent.*
 import com.iresetic.weatherreport.weatherforcast.presentation.model.UiCityWeatherReport
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherForecastViewModel @Inject constructor(
     private val getSavedCity: GetSavedCity,
-    private val weatherReportRepository: WeatherReportRepository
+    private val getCityWeatherForecast: GetCityWeatherForecast,
 ): ViewModel() {
     var state by mutableStateOf(WeatherForecastUiState())
         private set
@@ -50,7 +50,7 @@ class WeatherForecastViewModel @Inject constructor(
         viewModelScope.launch {
             val city = getSavedCity.invoke() ?: City.emptyCityModel()
             if(city != City.emptyCityModel()) {
-                when(val cityWeatherReport = weatherReportRepository.getCityWeatherReport(city)) {
+                when(val cityWeatherReport = getCityWeatherForecast.invoke(city)) {
                     is Resource.Success -> {
                         state = state.copy(
                             isLoading = false,
