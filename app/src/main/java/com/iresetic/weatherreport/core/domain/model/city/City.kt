@@ -1,7 +1,5 @@
 package com.iresetic.weatherreport.core.domain.model.city
 
-import com.iresetic.weatherreport.core.data.local.model.CityDto
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

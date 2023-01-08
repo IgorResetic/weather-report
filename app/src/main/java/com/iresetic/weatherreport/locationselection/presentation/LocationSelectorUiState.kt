@@ -1,6 +1,5 @@
 package com.iresetic.weatherreport.locationselection.presentation
 
-import androidx.compose.ui.graphics.Color
 import com.iresetic.weatherreport.locationselection.presentation.model.UICity
 
 data class LocationSelectorUiState(

@@ -1,6 +1,7 @@
 package com.iresetic.weatherreport.weatherforcast.presentation
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -49,17 +51,19 @@ fun WeatherForecastScreen(
         if(viewModelState.isLoading) {
             ProgressIndicator()
         } else {
+
+            if(viewModelState.error != null) {
+                Toast.makeText(LocalContext.current, viewModel.state.error, Toast.LENGTH_SHORT).show()
+            }
+
             Column(modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
             ) {
+
                 when {
                     !viewModelState.isCitySelected -> {
                         Text(text = stringResource(id = R.string.weather_forecast_city_not_selected_message))
-                    }
-
-                    viewModelState.error != null -> {
-                        Text(text = viewModelState.error)
                     }
 
                     else -> {

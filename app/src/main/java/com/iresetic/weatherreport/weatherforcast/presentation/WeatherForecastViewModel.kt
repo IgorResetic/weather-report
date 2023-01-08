@@ -10,7 +10,8 @@ import com.iresetic.weatherreport.core.domain.usecases.GetSavedCity
 import com.iresetic.weatherreport.core.util.Resource
 import com.iresetic.weatherreport.weatherforcast.domain.model.CityWeatherReport
 import com.iresetic.weatherreport.weatherforcast.domain.usecases.GetCityWeatherForecast
-import com.iresetic.weatherreport.weatherforcast.presentation.WeatherForecastEvent.*
+import com.iresetic.weatherreport.weatherforcast.presentation.WeatherForecastEvent.GetCityWeatherReport
+import com.iresetic.weatherreport.weatherforcast.presentation.WeatherForecastEvent.RefreshWeatherForecastScreen
 import com.iresetic.weatherreport.weatherforcast.presentation.model.UiCityWeatherReport
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,12 +21,12 @@ import javax.inject.Inject
 class WeatherForecastViewModel @Inject constructor(
     private val getSavedCity: GetSavedCity,
     private val getCityWeatherForecast: GetCityWeatherForecast,
-): ViewModel() {
+) : ViewModel() {
     var state by mutableStateOf(WeatherForecastUiState())
         private set
 
     fun onEvent(event: WeatherForecastEvent) {
-        when(event) {
+        when (event) {
             is GetCityWeatherReport -> {
                 state = state.copy(
                     isLoading = true,
@@ -36,40 +37,26 @@ class WeatherForecastViewModel @Inject constructor(
                 getCityWeatherForecast()
             }
             is RefreshWeatherForecastScreen -> {
-               state = state.copy(
-                   isLoading = true,
-                   isRefreshing = true
-               )
+                state = state.copy(
+                    isLoading = true,
+                    isRefreshing = true
+                )
 
-               getCityWeatherForecast()
+                getCityWeatherForecast()
             }
         }
     }
 
-    fun getCityWeatherForecast() {
+    private fun getCityWeatherForecast() {
         viewModelScope.launch {
             val city = getSavedCity.invoke() ?: City.emptyCityModel()
-            if(city != City.emptyCityModel()) {
-                when(val cityWeatherReport = getCityWeatherForecast.invoke(city)) {
+            if (city != City.emptyCityModel()) {
+                when (val cityWeatherReport = getCityWeatherForecast.invoke(city)) {
                     is Resource.Success -> {
-                        state = state.copy(
-                            isLoading = false,
-                            weatherReport = UiCityWeatherReport.fromDomain(
-                                cityWeatherReport.data ?:
-                                CityWeatherReport.emptyCityWeatherReport()
-                            ),
-                            isCitySelected = true,
-                            isRefreshing = false,
-                            error = null
-                        )
+                        setWeatherReport(cityWeatherReport.data, city)
                     }
                     is Resource.Error -> {
-                        state = state.copy(
-                            isLoading = false,
-                            isCitySelected = true,
-                            isRefreshing = false,
-                            error = cityWeatherReport.message
-                        )
+                        setWeatherReport(cityWeatherReport.data, city, cityWeatherReport.message)
                     }
                 }
             } else {
@@ -81,5 +68,24 @@ class WeatherForecastViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun setWeatherReport(
+        weatherReport: CityWeatherReport?,
+        city: City,
+        errorMessage: String? = null,
+    ) {
+        state = state.copy(
+            isLoading = false,
+            weatherReport = UiCityWeatherReport.fromDomain(weatherReport
+                ?: CityWeatherReport.emptyCityWeatherReport().copy(
+                    id = city.id,
+                    cityName = city.name
+                )
+            ),
+            isCitySelected = true,
+            isRefreshing = false,
+            error = errorMessage
+        )
     }
 }

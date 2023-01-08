@@ -16,5 +16,12 @@ data class UiCityWeatherReport(
             humidity = cityWeatherReport.humidity,
             windSpeed = cityWeatherReport.windSpeed
         )
+
+        fun emptyUiCityWeatherReport() = UiCityWeatherReport(
+            cityName = "",
+            currentTemperature = WeatherData.emptyWeatherData(),
+            humidity = WeatherData.emptyWeatherData(),
+            windSpeed = WeatherData.emptyWeatherData()
+        )
     }
 }

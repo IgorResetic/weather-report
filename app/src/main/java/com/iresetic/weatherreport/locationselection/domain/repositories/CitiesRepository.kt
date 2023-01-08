@@ -5,6 +5,4 @@ import com.iresetic.weatherreport.core.domain.model.city.City
 interface CitiesRepository {
     suspend fun getAllCities(): List<City>
     suspend fun getCityData(cityId: String): City?
-
-    // Search for cities.
 }
