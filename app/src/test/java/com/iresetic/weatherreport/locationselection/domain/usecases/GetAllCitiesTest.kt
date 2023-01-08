@@ -1,18 +1,24 @@
 package com.iresetic.weatherreport.locationselection.domain.usecases
 
+import com.iresetic.weatherreport.common.MainCoroutineRule
 import com.iresetic.weatherreport.core.domain.model.city.City
+import com.iresetic.weatherreport.core.util.DispatchersProvider
 import com.iresetic.weatherreport.locationselection.domain.repositories.CitiesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetAllCitiesTest {
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
+
     private lateinit var mockCitiesRepository: CitiesRepository
     private lateinit var getAllCities: GetAllCities
 
@@ -25,12 +31,16 @@ class GetAllCitiesTest {
 
     @Before
     fun setUp() {
+        val dispatchersProvider = object : DispatchersProvider {
+            override fun io() = mainCoroutineRule.dispatcher
+        }
+
         mockCitiesRepository = mock()
-        getAllCities = GetAllCities(mockCitiesRepository)
+        getAllCities = GetAllCities(mockCitiesRepository, dispatchersProvider)
     }
 
     @Test
-    fun invoke_successfullyGetAllCities() = runTest{
+    fun invoke_successfullyGetAllCities() = runTest {
         whenever(mockCitiesRepository.getAllCities()).thenReturn(listOf(testCity))
 
         val result = getAllCities.invoke()
@@ -39,7 +49,7 @@ class GetAllCitiesTest {
     }
 
     @Test
-    fun invoke_failedToGetAllCities() = runTest{
+    fun invoke_failedToGetAllCities() = runTest {
         whenever(mockCitiesRepository.getAllCities()).thenReturn(null)
 
         val result = getAllCities.invoke()

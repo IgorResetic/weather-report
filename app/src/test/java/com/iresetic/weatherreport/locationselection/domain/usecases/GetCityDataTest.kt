@@ -1,17 +1,23 @@
 package com.iresetic.weatherreport.locationselection.domain.usecases
 
+import com.iresetic.weatherreport.common.MainCoroutineRule
 import com.iresetic.weatherreport.core.domain.model.city.City
+import com.iresetic.weatherreport.core.util.DispatchersProvider
 import com.iresetic.weatherreport.locationselection.domain.repositories.CitiesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetCityDataTest {
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
+
     private lateinit var mockCitiesRepository: CitiesRepository
     private lateinit var getSavedCityData: GetCityData
 
@@ -24,8 +30,12 @@ class GetCityDataTest {
 
     @Before
     fun setUp() {
+        val dispatchersProvider = object : DispatchersProvider {
+            override fun io() = mainCoroutineRule.dispatcher
+        }
+
         mockCitiesRepository = mock()
-        getSavedCityData = GetCityData(mockCitiesRepository)
+        getSavedCityData = GetCityData(mockCitiesRepository, dispatchersProvider)
     }
 
     @Test

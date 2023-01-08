@@ -4,6 +4,7 @@ import com.iresetic.weatherreport.common.MainCoroutineRule
 import com.iresetic.weatherreport.core.data.local.datasource.SimpleLocalDataSource
 import com.iresetic.weatherreport.core.domain.model.city.City
 import com.iresetic.weatherreport.core.domain.usecases.SaveSelectCity
+import com.iresetic.weatherreport.core.util.DispatchersProvider
 import com.iresetic.weatherreport.locationselection.domain.repositories.CitiesRepository
 import com.iresetic.weatherreport.locationselection.domain.usecases.GetAllCities
 import com.iresetic.weatherreport.locationselection.domain.usecases.GetCityData
@@ -51,11 +52,15 @@ class LocationSelectorViewModelTest {
 
     @Before
     fun setUp() {
+        val dispatchersProvider = object : DispatchersProvider {
+            override fun io() = mainCoroutineRule.dispatcher
+        }
+
         mockCitiesRepository = mock()
         mockSimpleLocalDataSource = mock()
-        getAllCities = GetAllCities(mockCitiesRepository)
-        getCityData = GetCityData(mockCitiesRepository)
-        saveSelectCity = SaveSelectCity(mockSimpleLocalDataSource)
+        getAllCities = GetAllCities(mockCitiesRepository, dispatchersProvider)
+        getCityData = GetCityData(mockCitiesRepository, dispatchersProvider)
+        saveSelectCity = SaveSelectCity(mockSimpleLocalDataSource, dispatchersProvider)
 
         locationSelectorViewModel = LocationSelectorViewModel(
             getAllCities,
