@@ -1,5 +1,7 @@
 package com.iresetic.weatherreport.core.di
 
+import com.iresetic.weatherreport.core.util.CoroutineDispatchersProvider
+import com.iresetic.weatherreport.core.util.DispatchersProvider
 import com.iresetic.weatherreport.locationselection.data.CitiesRepositoryImpl
 import com.iresetic.weatherreport.locationselection.domain.repositories.CitiesRepository
 import com.iresetic.weatherreport.weatherforcast.data.repositories.WeatherReportRepositoryImpl
@@ -26,4 +28,8 @@ abstract class RepositoryModule {
     abstract fun bindWeatherReportRepository(
         weatherReportRepositoryImpl: WeatherReportRepositoryImpl
     ): WeatherReportRepository
+
+    @Binds
+    abstract fun bindDispatchersProvider(dispatchersProvider: CoroutineDispatchersProvider):
+        DispatchersProvider
 }

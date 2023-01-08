@@ -12,7 +12,6 @@ import com.iresetic.weatherreport.locationselection.domain.usecases.GetCityData
 import com.iresetic.weatherreport.locationselection.presentation.LocationSelectorEvent.*
 import com.iresetic.weatherreport.locationselection.presentation.model.UICity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,7 +58,7 @@ class LocationSelectorViewModel @Inject constructor(
     }
 
     private fun selectCity(cityId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val selectedCity = getCityData.invoke(cityId)
             saveSelectCity.invoke(selectedCity ?: City.emptyCityModel())
         }

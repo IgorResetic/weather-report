@@ -3,11 +3,11 @@ package com.iresetic.weatherreport.weatherforcast.domain.usecases
 import android.content.Context
 import com.iresetic.weatherreport.R
 import com.iresetic.weatherreport.core.domain.model.city.City
+import com.iresetic.weatherreport.core.util.DispatchersProvider
 import com.iresetic.weatherreport.core.util.Resource
 import com.iresetic.weatherreport.weatherforcast.domain.model.CityWeatherReport
 import com.iresetic.weatherreport.weatherforcast.domain.repositories.WeatherReportRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
@@ -15,13 +15,14 @@ import javax.inject.Inject
 
 class GetCityWeatherForecast @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val weatherForecastRepository: WeatherReportRepository
+    private val weatherForecastRepository: WeatherReportRepository,
+    private val dispatchersProvider: DispatchersProvider
 ) {
     private lateinit var selectedCity: City
 
     suspend operator fun invoke(city: City): Resource<CityWeatherReport> {
         selectedCity = city
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatchersProvider.io()) {
             try {
                 val report = weatherForecastRepository.getCityWeatherReport(city)
 

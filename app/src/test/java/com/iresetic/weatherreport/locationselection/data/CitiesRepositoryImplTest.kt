@@ -1,6 +1,5 @@
 package com.iresetic.weatherreport.locationselection.data
 
-import android.app.Application
 import android.content.Context
 import android.content.res.AssetManager
 import com.iresetic.weatherreport.core.constants.LOCATIONS_JSON_FILENAME
@@ -10,7 +9,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.spy
 import org.mockito.kotlin.whenever
 import java.io.BufferedReader
 import java.io.InputStream
